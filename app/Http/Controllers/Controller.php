@@ -10,4 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+     function getCities() {
+       return response()->json(["status" => 0, "message" => "Unable to find Shop"], 200);
+    }
 }
