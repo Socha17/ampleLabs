@@ -14,12 +14,10 @@ import ItemList from '../../../resources/js/components/ItemList.vue';
 
 
 beforeEach(function () {
-  // import and pass your custom axios instance to this method
   moxios.install()
 })
 
 afterEach(function () {
-  // import and pass your custom axios instance to this method
   moxios.uninstall()
 })
 
@@ -29,6 +27,7 @@ describe('AppContainer.vue', () => {
     expect(wrapper.html()).toContain('div id="app">');
   });
 });
+
 describe('Login.vue', () => {
   it('make sure login component renders correctly ', () => {
     const wrapper = mount(Login);
@@ -59,7 +58,6 @@ describe('Services.vue', () => {
       status: 200,
       response: {"status":0,"cities":[{"id":1,"name":"Toronto","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","services":[{"id":1,"name":"Shelter","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":1,"services_id":1}},{"id":2,"name":"Food","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":1,"services_id":2}},{"id":3,"name":"Clothing","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":1,"services_id":3}}]},{"id":2,"name":"New York","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","services":[{"id":1,"name":"Shelter","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":2,"services_id":1}},{"id":2,"name":"Food","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":2,"services_id":2}},{"id":3,"name":"Clothing","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":2,"services_id":3}}]},{"id":3,"name":"Vancouver","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","services":[{"id":1,"name":"Shelter","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":3,"services_id":1}},{"id":2,"name":"Food","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":3,"services_id":2}},{"id":3,"name":"Clothing","created_at":"2019-10-24 03:15:40","updated_at":"2019-10-24 03:15:40","pivot":{"cities_id":3,"services_id":3}}]}]}
     });
-
     expect(wrapper.html()).toContain('Welcome Matt');
   });
 });
