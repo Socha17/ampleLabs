@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get("/getCities", "Controller@getCities");
+Route::get("/getServiceData/{serviceID}", "Controller@getServiceData");

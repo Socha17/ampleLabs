@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div class="container">
+    <div v-if="step !== 'serviceData'" class="container">
       <h1>Welcome {{name}}</h1>
       <h3>We're here to help</h3>
-      <h4>What city do you live in?</h4>
-      <CityList :cities="cities"></CityList>
+      <h4>{{step === 'city' ? 'What city do you live in?' : `Services available in ${selectedCity.name}`}}</h4>
+      <ItemList :items="items"></ItemList>
+    </div>
+    <div v-if="step === 'serviceData'" class="container">
+      <h1>{{selectedService.name}} In {{selectedCity.name}}</h1>
+      <h3>data</h3>
     </div>
   </div>
 </template>
@@ -13,8 +17,7 @@
 
 const axios = require('axios')
 const url = 'http://localhost:8000'
-import CityList from './CityList.vue'
-
+import ItemList from './ItemList.vue'
 
 export default {
   name: 'ToDoApp',
@@ -22,11 +25,13 @@ export default {
     name: String
   },
   components: {
-    CityList,
+    ItemList,
   },
   data() {
     return {
-      cities: [],
+      items: [],
+      step: 'city',
+      selectedCity: null,
     }
   },
   mounted() {
@@ -36,13 +41,34 @@ export default {
     getCities() {
       axios.get(`/getCities`)
       .then((res) => {
-        console.log(res);
         if (res.data.status === 0) {
-          this.cities = res.data.cities
+          this.items = res.data.cities
         } else {
           this.$noty.error("Something went wrong")
         }
       })
+    },
+    getServiceData() {
+      axios.get(`/getServiceData/${this.selectedService.id}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data.status === 0) {
+          this.step = 'serviceData'
+        } else {
+          this.$noty.error("Something went wrong")
+        }
+      })
+    },
+    selectItem(item) {
+      if (this.step === 'city') {
+        this.items = item.services
+        this.selectedCity = item;
+        this.step = 'services'
+      } else {
+        this.selectedService = item;
+        this.items = [];
+        this.getServiceData()
+      }
     },
   },
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="CityList">
-    <div v-for="city in cities" v-bind:key="city.id" class="card">
-      <span>{{city.name}}</span>
+    <div v-for="item in items" v-bind:key="item.id" class="card" v-on:click="emitItem(item)">
+      <span>{{item.name}}</span>
     </div>
   </div>
 </template>
@@ -9,8 +9,8 @@
 <script>
 
 export default {
-  name: 'CityList',
-  props: ['cities'],
+  name: 'ItemList',
+  props: ['items'],
   components: {
   },
   data() {
@@ -18,9 +18,11 @@ export default {
     }
   },
   mounted() {
-    console.log(this.cities);
   },
   methods: {
+    emitItem(item) {
+      this.$parent.selectItem(item)
+    }
   },
 }
 </script>
@@ -36,6 +38,7 @@ export default {
   display: flex;
 }
 .card {
+  border-radius: 6px;
   padding: 15px;
   margin: 20px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
