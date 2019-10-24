@@ -1,15 +1,21 @@
 <template>
   <div id="app">
+    <Services v-if="userLoggedIn" :name="name"/>
     <modal name="login" width="85%" height="auto" :clickToClose="false">
+      <Login/>
     </modal>
   </div>
 </template>
 
 <script>
+import Services from './Services.vue'
+import Login from './Login.vue'
 
 export default {
   name: 'app',
   components: {
+    Services,
+    Login,
   },
   data() {
     return {
