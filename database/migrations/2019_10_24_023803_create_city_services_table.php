@@ -13,12 +13,12 @@ class CreateCityServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('city_services', function (Blueprint $table) {
+        Schema::create('cities_services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('city_id')->unsigned()->index();
-            $table->foreign('city_id')->references('id')->on('cities');
-            $table->integer('service_id')->unsigned()->index();
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->integer('cities_id')->unsigned()->index();
+            $table->foreign('cities_id')->references('id')->on('cities');
+            $table->integer('services_id')->unsigned()->index();
+            $table->foreign('services_id')->references('id')->on('services');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCityServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('city_services');
+        Schema::dropIfExists('cities_services');
     }
 }

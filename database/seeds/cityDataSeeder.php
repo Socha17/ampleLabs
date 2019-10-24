@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Cities;
 use App\Services;
-use App\City_services;
+use App\cities_services;
 
 class cityDataSeeder extends Seeder
 {
@@ -38,11 +38,14 @@ class cityDataSeeder extends Seeder
         $service->name = "Clothing";
         $service->save();
 
-        for ($i=1; $i < 4; $i++) {
-          $cityService = new City_services();
-          $cityService->city_id = $i;
-          $cityService->service_id = $i;
-          $cityService->save();
+        for ($x=1; $x < 4; $x++) {
+          for ($i=1; $i < 4; $i++) {
+            $cityService = new cities_services();
+            $cityService->cities_id = $x;
+            $cityService->services_id = $i;
+            $cityService->save();
+          }
         }
+
     }
 }
