@@ -27,6 +27,18 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+ import VueNoty from 'vuejs-noty'
+ import VModal from 'vue-js-modal'
+
+ Vue.use(VModal)
+ Vue.use(require('vue-moment'));
+ Vue.use(VueNoty)
+
+ Vue.config.productionTip = false
+
+ import 'vuejs-noty/dist/vuejs-noty.css'
+
+
 const app = new Vue({
     el: '#app',
 });
