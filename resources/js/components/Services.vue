@@ -4,6 +4,7 @@
       <h1>Welcome {{name}}</h1>
       <h3>We're here to help</h3>
       <h4>What city do you live in?</h4>
+      <CityList :cities="cities"></CityList>
     </div>
   </div>
 </template>
@@ -12,6 +13,7 @@
 
 const axios = require('axios')
 const url = 'http://localhost:8000'
+import CityList from './CityList.vue'
 
 
 export default {
@@ -19,9 +21,12 @@ export default {
   props: {
     name: String
   },
+  components: {
+    CityList,
+  },
   data() {
     return {
-      cities: null,
+      cities: [],
     }
   },
   mounted() {

@@ -1,8 +1,7 @@
 <template>
-  <div style="margin-top:25px;">
-    <h2 v-if="items.length === 0">No Items In List</h2>
-    <div v-for="city in cities" v-bind:key="item.id" class="card">
-
+  <div class="CityList">
+    <div v-for="city in cities" v-bind:key="city.id" class="card">
+      <span>{{city.name}}</span>
     </div>
   </div>
 </template>
@@ -19,7 +18,7 @@ export default {
     }
   },
   mounted() {
-
+    console.log(this.cities);
   },
   methods: {
   },
@@ -28,11 +27,16 @@ export default {
 
 <style scoped>
 
+.CityList {
+  margin-top: 25px;
+  display: flex;
+}
 .topSide {
   justify-content: space-around;
   display: flex;
 }
 .card {
+  padding: 15px;
   margin: 20px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
