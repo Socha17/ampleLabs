@@ -66,7 +66,7 @@
     <body>
         <div class="flex-center position-ref full-height">
                     <div id="app">
-                        <example-component></example-component>
+                        <app-container></app-container>
                     </div>
                     <script type="text/javascript" src="js/app.js"></script>
         </div>
