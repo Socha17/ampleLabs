@@ -46,7 +46,7 @@ export default {
         } else {
           this.$noty.error("Something went wrong")
         }
-      })
+      }).catch()
     },
     getServiceData() {
       axios.get(`/getServiceData/${this.selectedService.id}`)
@@ -57,7 +57,7 @@ export default {
         } else {
           this.$noty.error("Something went wrong")
         }
-      })
+      }).catch()
     },
     selectItem(item) {
       if (this.step === 'city') {
