@@ -1977,6 +1977,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var url = 'http://localhost:8000';
@@ -1992,9 +2003,22 @@ var url = 'http://localhost:8000';
   data: function data() {
     return {
       items: [],
+      contacts: [],
+      foodItems: [],
       step: 'city',
-      selectedCity: null
+      selectedCity: null,
+      selectedService: null
     };
+  },
+  computed: {
+    // a computed getter
+    serviceText: function serviceText() {
+      if (!this.selectedService) {
+        return '';
+      }
+
+      return "".concat(this.selectedService.name, " Available");
+    }
   },
   mounted: function mounted() {
     this.getCities();
@@ -2009,7 +2033,7 @@ var url = 'http://localhost:8000';
         } else {
           _this.$noty.error("Something went wrong");
         }
-      });
+      })["catch"]();
     },
     getServiceData: function getServiceData() {
       var _this2 = this;
@@ -2019,10 +2043,14 @@ var url = 'http://localhost:8000';
 
         if (res.data.status === 0) {
           _this2.step = 'serviceData';
+          _this2.serviceJson = res.data.json.items;
+          _this2.contacts = res.data.contactsForHelp;
+          _this2.foodItems = res.data.data.slice(0, 5);
+          ;
         } else {
           _this2.$noty.error("Something went wrong");
         }
-      });
+      })["catch"]();
     },
     selectItem: function selectItem(item) {
       if (this.step === 'city') {
@@ -2109,7 +2137,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nh3[data-v-30b0c6c9] {\n  margin: 40px 0 0;\n}\nul[data-v-30b0c6c9] {\n  list-style-type: none;\n  padding: 0;\n}\nli[data-v-30b0c6c9] {\n  display: inline-block;\n  margin: 0 10px;\n}\na[data-v-30b0c6c9] {\n  color: #42b983;\n}\n.container[data-v-30b0c6c9] {\n  max-width: 800px;\n  margin: auto;\n}\n", ""]);
+exports.push([module.i, "\nh3[data-v-30b0c6c9] {\n  margin: 40px 0 0;\n}\nul[data-v-30b0c6c9] {\n  list-style-type: none;\n  padding: 0;\n}\nli[data-v-30b0c6c9] {\n  display: inline-block;\n  margin: 0 10px;\n}\na[data-v-30b0c6c9] {\n  color: #42b983;\n}\n.container[data-v-30b0c6c9] {\n  max-width: 800px;\n  margin: auto;\n}\n.card[data-v-30b0c6c9] {\n  border-radius: 6px;\n  padding: 15px;\n  margin: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n}\n.card[data-v-30b0c6c9]:hover {\n  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);\n}\n", ""]);
 
 // exports
 
@@ -20614,17 +20642,83 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _vm.step === "serviceData"
-      ? _c("div", { staticClass: "container" }, [
-          _c("h1", [
-            _vm._v(
-              _vm._s(_vm.selectedService.name) +
-                " In " +
-                _vm._s(_vm.selectedCity.name)
-            )
-          ]),
-          _vm._v(" "),
-          _c("h3", [_vm._v("data")])
-        ])
+      ? _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("h1", [
+              _vm._v(
+                _vm._s(_vm.selectedService.name) +
+                  " In " +
+                  _vm._s(_vm.selectedCity.name)
+              )
+            ]),
+            _vm._v(" "),
+            _c("h3", [_vm._v(_vm._s(_vm.serviceText) + " ")]),
+            _vm._v(" "),
+            _vm._l(_vm.serviceJson, function(item) {
+              return _c(
+                "div",
+                {
+                  key: item.name,
+                  staticClass: "card",
+                  on: {
+                    click: function($event) {
+                      return _vm.emitItem(item)
+                    }
+                  }
+                },
+                [_c("span", [_vm._v(" Name: " + _vm._s(item))])]
+              )
+            }),
+            _vm._v(" "),
+            _c("h3", [_vm._v("Contacts For Help")]),
+            _vm._v(" "),
+            _vm._l(_vm.contacts, function(contact) {
+              return _c(
+                "div",
+                {
+                  key: contact.name,
+                  staticClass: "card",
+                  on: {
+                    click: function($event) {
+                      return _vm.emitItem(contact)
+                    }
+                  }
+                },
+                [
+                  _c("span", [
+                    _vm._v(
+                      " Name: " +
+                        _vm._s(contact.name) +
+                        " - Number: " +
+                        _vm._s(Math.floor(Math.random() * 1000000000))
+                    )
+                  ])
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("h3", [_vm._v("Food Available")]),
+            _vm._v(" "),
+            _vm._l(_vm.foodItems, function(item) {
+              return _c(
+                "div",
+                {
+                  key: item.name,
+                  staticClass: "card",
+                  on: {
+                    click: function($event) {
+                      return _vm.emitItem(item)
+                    }
+                  }
+                },
+                [_c("span", [_vm._v(" Name: " + _vm._s(item.product))])]
+              )
+            })
+          ],
+          2
+        )
       : _vm._e()
   ])
 }

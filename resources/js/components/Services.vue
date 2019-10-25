@@ -8,7 +8,18 @@
     </div>
     <div v-if="step === 'serviceData'" class="container">
       <h1>{{selectedService.name}} In {{selectedCity.name}}</h1>
-      <h3>data</h3>
+      <h3>{{serviceText}} </h3>
+      <div v-for="item in serviceJson" v-bind:key="item.name" class="card" v-on:click="emitItem(item)">
+        <span> Name: {{item}}</span>
+      </div>
+      <h3>Contacts For Help</h3>
+      <div v-for="contact in contacts" v-bind:key="contact.name" class="card" v-on:click="emitItem(contact)">
+        <span> Name: {{contact.name}} - Number: {{Math.floor(Math.random() * 1000000000)}}</span>
+      </div>
+      <h3>Food Available</h3>
+      <div v-for="item in foodItems" v-bind:key="item.name" class="card" v-on:click="emitItem(item)">
+        <span> Name: {{item.product}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -30,8 +41,20 @@ export default {
   data() {
     return {
       items: [],
+      contacts: [],
+      foodItems: [],
       step: 'city',
       selectedCity: null,
+      selectedService: null,
+    }
+  },
+  computed: {
+    // a computed getter
+    serviceText: function () {
+      if (!this.selectedService) {
+        return ''
+      }
+      return `${this.selectedService.name} Available`
     }
   },
   mounted() {
@@ -54,6 +77,9 @@ export default {
         console.log(res);
         if (res.data.status === 0) {
           this.step = 'serviceData'
+          this.serviceJson = res.data.json.items
+          this.contacts = res.data.contactsForHelp;
+          this.foodItems = res.data.data.slice(0, 5);;
         } else {
           this.$noty.error("Something went wrong")
         }
@@ -93,5 +119,16 @@ a {
 .container {
   max-width: 800px;
   margin: auto;
+}
+.card {
+  border-radius: 6px;
+  padding: 15px;
+  margin: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 </style>
