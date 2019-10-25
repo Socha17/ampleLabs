@@ -24,6 +24,12 @@ docker-compose up
 docker exec -it ampleLabs_web bash
 ```
 
+### 6. While ssh'd into docker install composer dependencies
+
+```
+composer install
+```
+
 ### 6. While ssh'd into docker run migrations and seeders (this command does both)
 
 ```

@@ -11,7 +11,7 @@ services:
       - ./:/var/www/app
   db:
     container_name: ${APP_NAME}_db
-    image: postgres:10.5
+    image: postgres:12.0
     ports:
       - 5432:5432
     volumes:
