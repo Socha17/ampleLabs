@@ -10,33 +10,39 @@
 npm install
 ```
 
-### 3. Create `.env` file (just copy and paste `.env.example`)
+### 3. build vue app
 
-### 4. Install docker container (this may take a few minutes)
+```
+npm run dev
+```
+
+### 4. Create `.env` file (just copy and paste `.env.example`)
+
+### 5. Install docker container (this may take a few minutes)
 
 ```
 docker-compose up
 ```
 
-### 5. Open new terminal window and ssh into docker container
+### 6. Open new terminal window and ssh into docker container
 
 ```
 docker exec -it ampleLabs_web bash
 ```
 
-### 6. While ssh'd into docker install composer dependencies
+### 7. While ssh'd into docker install composer dependencies
 
 ```
 composer install
 ```
 
-### 6. While ssh'd into docker run migrations and seeders (this command does both)
+### 8. While ssh'd into docker run migrations and seeders (this command does both)
 
 ```
 composer test
 ```
 
-### 7. Go to http://localhost:9000/
+### 9. Go to http://localhost:9000/
 
 ## How to run tests
 
