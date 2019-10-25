@@ -40,4 +40,15 @@ class ExampleTest extends TestCase
       $this->assertEquals(isset($responseObj->contactsForHelp), true);
       $this->assertEquals(isset($responseObj->data), true);
     }
+
+    /** @test */
+    public function markInaccurate()
+    {
+      $response = $this->postJSON('markInaccurate', ["city" => 1, "service" => 1, "comments" => "markInaccurate"]);
+
+      $response->assertSuccessful();
+      $responseObj = json_decode($response->getContent());
+
+      $this->assertEquals($responseObj->status, 0);
+    }
 }
