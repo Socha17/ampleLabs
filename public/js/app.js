@@ -1988,6 +1988,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var url = 'http://localhost:8000';
@@ -2007,11 +2016,11 @@ var url = 'http://localhost:8000';
       foodItems: [],
       step: 'city',
       selectedCity: null,
-      selectedService: null
+      selectedService: null,
+      comments: null
     };
   },
   computed: {
-    // a computed getter
     serviceText: function serviceText() {
       if (!this.selectedService) {
         return '';
@@ -2038,17 +2047,35 @@ var url = 'http://localhost:8000';
     getServiceData: function getServiceData() {
       var _this2 = this;
 
+      this.items = [];
       axios.get("/getServiceData/".concat(this.selectedService.id)).then(function (res) {
-        console.log(res);
-
         if (res.data.status === 0) {
           _this2.step = 'serviceData';
           _this2.serviceJson = res.data.json.items;
           _this2.contacts = res.data.contactsForHelp;
           _this2.foodItems = res.data.data.slice(0, 5);
-          ;
         } else {
           _this2.$noty.error("Something went wrong");
+        }
+      })["catch"]();
+    },
+    markInaccurate: function markInaccurate() {
+      this.$modal.show('comments');
+    },
+    submitMarkInaccurate: function submitMarkInaccurate() {
+      var _this3 = this;
+
+      axios.post("/markInaccurate", {
+        "service": this.selectedService.id,
+        "city": this.selectedCity.id,
+        "comments": this.comments
+      }).then(function (res) {
+        if (res.data.status === 0) {
+          _this3.$noty.success("Feedback Sent");
+
+          _this3.$modal.hide('comments');
+        } else {
+          _this3.$noty.error("Something went wrong");
         }
       })["catch"]();
     },
@@ -20615,78 +20642,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.step !== "serviceData"
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h1", [_vm._v("Welcome " + _vm._s(_vm.name))]),
-            _vm._v(" "),
-            _c("h3", [_vm._v("We're here to help")]),
-            _vm._v(" "),
-            _c("h4", [
-              _vm._v(
-                _vm._s(
-                  _vm.step === "city"
-                    ? "What city do you live in?"
-                    : "Services available in " + _vm.selectedCity.name
+  return _c(
+    "div",
+    [
+      _vm.step !== "serviceData"
+        ? _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("h1", [_vm._v("Welcome " + _vm._s(_vm.name))]),
+              _vm._v(" "),
+              _c("h3", [_vm._v("We're here to help")]),
+              _vm._v(" "),
+              !_vm.items.length ? _c("h3", [_vm._v("Loading...")]) : _vm._e(),
+              _vm._v(" "),
+              _vm.items.length
+                ? _c("h4", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.step === "city"
+                          ? "What city do you live in?"
+                          : "Services available in " + _vm.selectedCity.name
+                      )
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("ItemList", { attrs: { items: _vm.items } })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.step === "serviceData"
+        ? _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("h1", [
+                _vm._v(
+                  _vm._s(_vm.selectedService.name) +
+                    " In " +
+                    _vm._s(_vm.selectedCity.name)
                 )
-              )
-            ]),
-            _vm._v(" "),
-            _c("ItemList", { attrs: { items: _vm.items } })
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.step === "serviceData"
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h1", [
-              _vm._v(
-                _vm._s(_vm.selectedService.name) +
-                  " In " +
-                  _vm._s(_vm.selectedCity.name)
-              )
-            ]),
-            _vm._v(" "),
-            _c("h3", [_vm._v(_vm._s(_vm.serviceText) + " ")]),
-            _vm._v(" "),
-            _vm._l(_vm.serviceJson, function(item) {
-              return _c(
-                "div",
+              ]),
+              _vm._v(" "),
+              _c(
+                "h5",
                 {
-                  key: item.name,
-                  staticClass: "card",
                   on: {
                     click: function($event) {
-                      return _vm.emitItem(item)
+                      return _vm.markInaccurate(_vm.item)
                     }
                   }
                 },
-                [_c("span", [_vm._v(" Name: " + _vm._s(item))])]
-              )
-            }),
-            _vm._v(" "),
-            _c("h3", [_vm._v("Contacts For Help")]),
-            _vm._v(" "),
-            _vm._l(_vm.contacts, function(contact) {
-              return _c(
-                "div",
-                {
-                  key: contact.name,
-                  staticClass: "card",
-                  on: {
-                    click: function($event) {
-                      return _vm.emitItem(contact)
-                    }
-                  }
-                },
-                [
+                [_vm._v("Mark Data inaccurate")]
+              ),
+              _vm._v(" "),
+              _c("h3", [_vm._v(_vm._s(_vm.serviceText) + " ")]),
+              _vm._v(" "),
+              _vm._l(_vm.serviceJson, function(item) {
+                return _c("div", { key: item.name, staticClass: "card" }, [
+                  _c("span", [_vm._v(" Name: " + _vm._s(item))])
+                ])
+              }),
+              _vm._v(" "),
+              _c("h3", [_vm._v("Contacts For Help")]),
+              _vm._v(" "),
+              _vm._l(_vm.contacts, function(contact) {
+                return _c("div", { key: contact.name, staticClass: "card" }, [
                   _c("span", [
                     _vm._v(
                       " Name: " +
@@ -20695,32 +20719,72 @@ var render = function() {
                         _vm._s(Math.floor(Math.random() * 1000000000))
                     )
                   ])
-                ]
-              )
-            }),
-            _vm._v(" "),
-            _c("h3", [_vm._v("Food Available")]),
-            _vm._v(" "),
-            _vm._l(_vm.foodItems, function(item) {
-              return _c(
-                "div",
-                {
-                  key: item.name,
-                  staticClass: "card",
-                  on: {
-                    click: function($event) {
-                      return _vm.emitItem(item)
-                    }
+                ])
+              }),
+              _vm._v(" "),
+              _c("h3", [_vm._v("Food Available")]),
+              _vm._v(" "),
+              _vm._l(_vm.foodItems, function(item) {
+                return _c("div", { key: item.name, staticClass: "card" }, [
+                  _c("span", [_vm._v(" Name: " + _vm._s(item.product))])
+                ])
+              })
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "modal",
+        { attrs: { name: "comments", width: "85%", height: "auto" } },
+        [
+          _c(
+            "div",
+            {
+              staticStyle: { padding: "20px", margin: "auto", width: "500px" }
+            },
+            [
+              _vm._v("\n      Add some comments, what is inaccurate?"),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.comments,
+                    expression: "comments"
                   }
-                },
-                [_c("span", [_vm._v(" Name: " + _vm._s(item.product))])]
-              )
-            })
-          ],
-          2
-        )
-      : _vm._e()
-  ])
+                ],
+                staticClass: "textInput",
+                attrs: { type: "text" },
+                domProps: { value: _vm.comments },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.comments = $event.target.value
+                  }
+                }
+              }),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "submit", value: "Submit" },
+                on: {
+                  click: function($event) {
+                    return _vm.submitMarkInaccurate()
+                  }
+                }
+              })
+            ]
+          )
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

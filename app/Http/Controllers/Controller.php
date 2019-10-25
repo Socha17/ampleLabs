@@ -7,9 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use OzdemirBurak\JsonCsv\File\Csv;
+use Illuminate\Http\Request;
 
 use App\Cities;
 use App\Services;
+use App\Flagged_data;
 
 class Controller extends BaseController
 {
@@ -17,6 +19,14 @@ class Controller extends BaseController
 
      function getCities() {
        return response()->json(["status" => 0, "cities" => Cities::with(['Services'])->get()], 200);
+    }
+     function markInaccurate(Request $request) {
+       $flagged = new Flagged_data();
+       $flagged->cities_id = $request->city;
+       $flagged->services_id = $request->service;
+       $flagged->comments = $request->comments;
+       $flagged->save();
+       return response()->json(["status" => 0], 200);
     }
 
     function getServiceData($serviceID) {
