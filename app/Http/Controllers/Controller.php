@@ -24,7 +24,7 @@ class Controller extends BaseController
       $path = storage_path() . "/json/" . $service->name . ".json";
       $json = json_decode(file_get_contents($path), true);
 
-      $csv = new Csv(storage_path() . '/csv/addresses.csv');
+      $csv = new Csv(storage_path() . '/csv/names.csv');
       $csv->setConversionKey('options', JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
       $csvToJson = json_decode($csv->convert());
 
